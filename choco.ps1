@@ -1,0 +1,10 @@
+iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install git
+choco install git-tf
+choco install psake
+choco install procexp
+choco install xunit
+choco install poshgit
+choco install 7zip
+choco install kdiff3
+choco install nuget.commandline
