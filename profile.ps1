@@ -9,49 +9,15 @@ function Get-Batchfile ($file) {
     }
 }
 
-function VS2008()
+function VS2017()
 {
-    $vs90comntools = (Get-ChildItem env:VS90COMNTOOLS).Value
-    $batchFile = [System.IO.Path]::Combine($vs90comntools, "vsvars32.bat")
+	$vsPath = (Get-VsSetupInstance).InstallationPath
+    $vsCommonTools = [System.IO.Path]::Combine($vsPath, "Common7", "tools")
+    $batchFile = [System.IO.Path]::Combine($vsCommonTools, "VsDevCmd.bat")
     Get-Batchfile $BatchFile
-
-    [System.Console]::Title = "Visual Studio 2008 Windows PowerShell"
-}
-
-function VS2010()
-{
-    $vs100comntools = (Get-ChildItem env:VS100COMNTOOLS).Value
-    $batchFile = [System.IO.Path]::Combine($vs100comntools, "vsvars32.bat")
-    Get-Batchfile $BatchFile
-
-    [System.Console]::Title = "Visual Studio 2010 Windows PowerShell"
-}
-
-function VS2012()
-{
-    $vs110comntools = (Get-ChildItem env:VS110COMNTOOLS).Value
-    $batchFile = [System.IO.Path]::Combine($vs110comntools, "VsDevCmd.bat")
-    Get-Batchfile $BatchFile
-
-    [System.Console]::Title = "Visual Studio 2012 Windows PowerShell"
-}
-
-function VS2013()
-{
-    $vs120comntools = (Get-ChildItem env:VS120COMNTOOLS).Value
-    $batchFile = [System.IO.Path]::Combine($vs120comntools, "VsDevCmd.bat")
-    Get-Batchfile $BatchFile
-
-    [System.Console]::Title = "Visual Studio 2012 Windows PowerShell"
-}
-
-function VS2015()
-{
-    $vs140comntools = (Get-ChildItem env:VS140COMNTOOLS).Value
-    $batchFile = [System.IO.Path]::Combine($vs140comntools, "VsDevCmd.bat")
-    Get-Batchfile $BatchFile
-
-    [System.Console]::Title = "Visual Studio 2012 Windows PowerShell"
+	
+    [System.Console]::Title = "Visual Studio 2017 Windows PowerShell"
+	Write-Host "Visual Studio 2017 Windows PowerShell"
 }
 
 function debug
@@ -74,7 +40,7 @@ function build($solutionPath)
 }
 
 #Vim Config
-$VIMPATH    = "C:\Program Files (x86)\Vim\vim74\vim.exe"
+$VIMPATH    = "C:\Program Files (x86)\Vim\vim80\vim.exe"
 
 Set-Alias vi   $VIMPATH
 Set-Alias vim  $VIMPATH
@@ -95,21 +61,22 @@ set-alias gets Get-Scripts
 set-alias dels Remove-Script
 # set-alias copy-f Write-Clipboard
 # set-alias paste-f Read-Clipboard
-set-alias gvim "C:\Program Files (x86)\Vim\vim74\gvim.exe"
+set-alias gvim "C:\Program Files (x86)\vim\vim80\gvim.exe"
 
 # import-module sqlps -disablenamechecking
 
 # set home
-$env:HOMEDRIVE = 'D:'
+$env:HOMEDRIVE = 'C:'
 $env:HOMEPATH = '\'
 
 # set path
 # $env:Path += ';D:\users\vitalim\shell'
 
-# "Visual Studio 2012 Windows PowerShell"
+# "Visual Studio 2017 Windows PowerShell"
 "powered by redshells"
-
+VS2017
 ""
-VS2015
-set-location "D:\Users\delossj\git"
-(get-psprovider 'FileSystem').Home = "D:"
+
+#set this
+set-location ""
+(get-psprovider 'FileSystem').Home = "C:"
