@@ -1,6 +1,6 @@
 set nocompatible
 
-execute pathogen#infect('d:/users/delossj/git/vim/{}')
+execute pathogen#infect('documents/git/vim/{}')
 
 source $VIMRUNTIME/mswin.vim
 behave mswin

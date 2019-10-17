@@ -1,23 +1,41 @@
-#(Get-Host).UI.RawUI.ForegroundColor = "White"
-#(Get-Host).UI.RawUI.BackgroundColor = "DarkBlue"
+function Initialize-Build16()
+{
+	Write-Host "`nVisual Studio 2019 variables initializing..." -ForegroundColor Yellow
 
-function Get-Batchfile ($file) {
-    $cmd = "`"$file`" & set"
-    cmd /c $cmd | Foreach-Object {
-        $p, $v = $_.split('=')
-        Set-Item -path env:$p -value $v
-    }
+    $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview').InstallationPath, "Common7\Tools")
+	pushd $installPath
+	
+	cmd /c "VsDevCmd.bat&set" |	foreach	{
+		if ($_ -match "=")
+		{
+			$v = $_.split("=");
+			#Write-Host $v[0] : $v[1]
+			set-item -Path ("env:{0}" -f $v[0]) -Value ($v[1])
+		}
+	}
+	popd
+	
+	Write-Host "`nVisual Studio 2019 variables set." -ForegroundColor Yellow
 }
 
-function VS2017()
+function Initialize-Build15
 {
-	$vsPath = (Get-VsSetupInstance).InstallationPath
-    $vsCommonTools = [System.IO.Path]::Combine($vsPath, "Common7", "tools")
-    $batchFile = [System.IO.Path]::Combine($vsCommonTools, "VsDevCmd.bat")
-    Get-Batchfile $BatchFile
+	Write-Host "`nVisual Studio 2017 variables initializing..." -ForegroundColor Yellow
+
+    $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance).InstallationPath, "Common7\Tools")
+	pushd $installPath
 	
-    [System.Console]::Title = "Visual Studio 2017 Windows PowerShell"
-	Write-Host "Visual Studio 2017 Windows PowerShell"
+	cmd /c "VsDevCmd.bat&set" |	foreach	{
+		if ($_ -match "=")
+		{
+			$v = $_.split("=");
+			#Write-Host $v[0] : $v[1]
+			set-item -Path ("env:{0}" -f $v[0]) -Value ($v[1])
+		}
+	}
+	popd
+	
+	Write-Host "`nVisual Studio 2017 variables set." -ForegroundColor Yellow
 }
 
 function debug
@@ -37,6 +55,20 @@ function debug
 function build($solutionPath)
 {
 	msbuild $solutionPath /m /t:"clean;rebuild"
+}
+
+function prompt {
+    $origLastExitCode = $LASTEXITCODE
+
+    $prompt = ""
+
+    $prompt += Write-Prompt "[$($ExecutionContext.SessionState.Path.CurrentLocation)" -ForegroundColor Green
+    $prompt += Write-VcsStatus
+    $prompt += Write-Prompt "]`n" -ForegroundColor Green
+    $prompt += "$('>' * ($nestedPromptLevel + 1)) "
+
+    $LASTEXITCODE = $origLastExitCode
+    $prompt
 }
 
 #Vim Config
@@ -59,24 +91,17 @@ set-alias auto Invoke-Script
 set-alias adds Add-Script
 set-alias gets Get-Scripts
 set-alias dels Remove-Script
-# set-alias copy-f Write-Clipboard
-# set-alias paste-f Read-Clipboard
-set-alias gvim "C:\Program Files (x86)\vim\vim80\gvim.exe"
-
-# import-module sqlps -disablenamechecking
+set-alias gvim "C:\Program Files (x86)\Vim\vim80\gvim.exe"
 
 # set home
 $env:HOMEDRIVE = 'C:'
 $env:HOMEPATH = '\'
 
-# set path
-# $env:Path += ';D:\users\vitalim\shell'
-
 # "Visual Studio 2017 Windows PowerShell"
 "powered by redshells"
-VS2017
-""
 
-#set this
+""
+Initialize-Build15
 set-location ""
 (get-psprovider 'FileSystem').Home = "C:"
+""
