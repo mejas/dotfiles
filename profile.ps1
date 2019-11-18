@@ -1,26 +1,6 @@
 function Initialize-Build16()
 {
-	Write-Host "`nVisual Studio 2019 variables initializing..." -ForegroundColor Yellow
-
-    $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview').InstallationPath, "Common7\Tools")
-	pushd $installPath
-	
-	cmd /c "VsDevCmd.bat&set" |	foreach	{
-		if ($_ -match "=")
-		{
-			$v = $_.split("=");
-			#Write-Host $v[0] : $v[1]
-			set-item -Path ("env:{0}" -f $v[0]) -Value ($v[1])
-		}
-	}
-	popd
-	
-	Write-Host "`nVisual Studio 2019 variables set." -ForegroundColor Yellow
-}
-
-function Initialize-Build15
-{
-	Write-Host "`nVisual Studio 2017 variables initializing..." -ForegroundColor Yellow
+	Write-Host "`nVisual Studio 2019 variables initializing..." -ForegroundColor Yellow -NoNewLine
 
     $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance).InstallationPath, "Common7\Tools")
 	pushd $installPath
@@ -35,7 +15,7 @@ function Initialize-Build15
 	}
 	popd
 	
-	Write-Host "`nVisual Studio 2017 variables set." -ForegroundColor Yellow
+	Write-Host "set!" -ForegroundColor Yellow
 }
 
 function debug
@@ -100,8 +80,7 @@ $env:HOMEPATH = '\'
 # "Visual Studio 2017 Windows PowerShell"
 "powered by redshells"
 
-""
-Initialize-Build15
-set-location ""
+Initialize-Build16
+set-location "C:\Users\delossantosj\Documents\git"
 (get-psprovider 'FileSystem').Home = "C:"
 ""
