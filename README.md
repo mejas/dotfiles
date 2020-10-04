@@ -6,4 +6,3 @@ A set of configuration files for preferred tools. Current setup is for a Windows
 - `vim` configured with [pathogen](https://github.com/tpope/vim-pathogen)
 - Windows PowerShell
   - Both from WMI and the new independent shell
-
