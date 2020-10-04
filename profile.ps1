@@ -2,7 +2,7 @@ function Initialize-Build16()
 {
 	Write-Host "`nVisual Studio 2019 variables initializing..." -ForegroundColor Yellow -NoNewLine
 
-    $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance).InstallationPath, "Common7\Tools")
+    $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance -Prerelease).InstallationPath, "Common7\Tools")
 	pushd $installPath
 	
 	cmd /c "VsDevCmd.bat&set" |	foreach	{
@@ -51,12 +51,6 @@ function prompt {
     $prompt
 }
 
-#Vim Config
-$VIMPATH    = "C:\Program Files (x86)\Vim\vim80\vim.exe"
-
-Set-Alias vi   $VIMPATH
-Set-Alias vim  $VIMPATH
-
 #
 # Add redshells
 #
@@ -71,16 +65,14 @@ set-alias auto Invoke-Script
 set-alias adds Add-Script
 set-alias gets Get-Scripts
 set-alias dels Remove-Script
-set-alias gvim "C:\Program Files (x86)\Vim\vim80\gvim.exe"
 
 # set home
 $env:HOMEDRIVE = 'C:'
 $env:HOMEPATH = '\'
 
-# "Visual Studio 2017 Windows PowerShell"
 "powered by redshells"
 
-Initialize-Build16
 set-location "C:\Users\delossantosj\Documents\git"
 (get-psprovider 'FileSystem').Home = "C:"
 ""
+Initialize-Build16
