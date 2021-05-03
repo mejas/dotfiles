@@ -12,11 +12,9 @@ cinst keepass -y
 cinst foobar2000 -y
 cinst python -y
 cinst vim -y
-#cinst virtualclonedrive -y
 cinst snoop -y
-cinst slack -y
 cinst notepadplusplus -y
-cinst palemoon -y
+cinst waterfox -y
 cinst mpv -y
 cisnt snoop -y
 cinst xmind -y
@@ -25,3 +23,4 @@ cinst universal-extractor -y
 cinst pandoc -y
 cinst typora -y
 cinst python3 -y
+cinst open-shell -y
