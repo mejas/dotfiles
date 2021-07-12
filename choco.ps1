@@ -24,3 +24,5 @@ cinst pandoc -y
 cinst typora -y
 cinst python3 -y
 cinst open-shell -y
+choco install shexview -y
+choco install shmnview -y
