@@ -1,9 +1,9 @@
 iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 cinst git -y
-cinst gittfs -y
+#cinst gittfs -y
 cinst poshgit -y
 cinst procexp -y
-cinst xunit -y
+#cinst xunit -y
 cinst 7zip -y
 cinst kdiff3 -y
 cinst nuget.commandline -y
@@ -16,10 +16,9 @@ cinst snoop -y
 cinst notepadplusplus -y
 cinst waterfox -y
 cinst mpv -y
-cisnt snoop -y
-cinst xmind -y
+#cinst xmind -y
 cinst streamlink -y
-cinst universal-extractor -y
+#cinst universal-extractor -y
 cinst pandoc -y
 cinst typora -y
 cinst python3 -y

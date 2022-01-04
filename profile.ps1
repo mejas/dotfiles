@@ -1,12 +1,15 @@
-function Initialize-Build16()
+function Initialize-Build($instance)
 {
-    $installPath = [System.IO.Path]::Combine((Get-VSSetupInstance -Prerelease).InstallationPath, "Common7\Tools")
+    $toolsPath =
+		[System.IO.Path]::Combine(
+			$instance.InstallationPath,
+			"Common7\Tools")
 	
-	if(Test-Path $installPath)
+	if(Test-Path $toolsPath)
 	{
-		Write-Host "`nVisual Studio 2019 variables initializing..." -ForegroundColor Yellow -NoNewLine
+		Write-Host ("`n{0} variables initializing..." -f $instance.DisplayName) -ForegroundColor Yellow -NoNewLine
 		
-		pushd $installPath
+		pushd $toolsPath
 		
 		cmd /c "VsDevCmd.bat&set" |	foreach	{
 			if ($_ -match "=")
@@ -62,7 +65,10 @@ $env:HOMEPATH = '\'
 
 "powered by redshells"
 
-Initialize-Build16
+# vs 2019 => [16.0,17.0)
+Initialize-Build(
+	(Get-VSSetupInstance -Prerelease | Select-VSSetupInstance -Version '17.0'))
+
 set-location "C:\Users\delossantosj\Documents\git"
 (get-psprovider 'FileSystem').Home = "C:"
 ""
