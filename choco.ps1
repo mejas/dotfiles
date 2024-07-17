@@ -1,27 +1,46 @@
 iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
-cinst git -y
-#cinst gittfs -y
-cinst poshgit -y
-cinst procexp -y
-#cinst xunit -y
-cinst 7zip -y
-cinst kdiff3 -y
-cinst nuget.commandline -y
-cinst bluescreenview.portable -y
-cinst keepass -y
-cinst foobar2000 -y
-cinst python -y
-cinst vim -y
-cinst snoop -y
-cinst notepadplusplus -y
-cinst waterfox -y
-cinst mpv -y
-#cinst xmind -y
-cinst streamlink -y
-#cinst universal-extractor -y
-cinst pandoc -y
-cinst typora -y
-cinst python3 -y
-cinst open-shell -y
+choco install git -y
+choco install poshgit -y
+choco install procexp -y
+choco install 7zip -y
+choco install kdiff3 -y
+choco install nuget.commandline -y
+choco install bluescreenview.portable -y
+choco install keepass -y
+choco install foobar2000 -y
+choco install python -y
+choco install vim -y
+choco install snoop -y
+choco install notepadplusplus -y
+choco install chromium -y
+choco install mpv -y
+choco install xmind -y
+choco install streamlink -y
+choco install pandoc -y
+choco install python3 -y
+choco install open-shell -y
 choco install shexview -y
 choco install shmnview -y
+choco install choco-cleaner -y
+choco install marktext -y
+choco install msbuild-structured-log-viewer -y
+choco install perfview -y
+choco install podman-cli -y
+choco install podman-desktop -y
+choco install docker-cli -y
+choco install docker-compose -y
+choco install cleanup-desktop-shortcuts.hook -y
+choco install cmder -y
+choco install ilspy -y
+choco install wiztree -y
+choco install vscode -y
+choco install seq -y
+choco install powertoys -y
+choco install powershell-core -y
+choco install openjdk -y
+choco install kitty -y
+choco install procdump -y
+choco install procexp -y
+choco install python -y
+choco install sql-server-management-studio -y
+choco install vim -y

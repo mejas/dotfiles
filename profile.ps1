@@ -29,15 +29,15 @@ function Initialize-Build($instance)
 	}
 }
 
-# basically gives the shell directory formatting and color
+# # basically gives the shell directory formatting and color
 function prompt {
     $origLastExitCode = $LASTEXITCODE
 
     $prompt = ""
 
-    $prompt += Write-Prompt "[$($ExecutionContext.SessionState.Path.CurrentLocation)" -ForegroundColor Green
+    $prompt += Write-Prompt "[$($ExecutionContext.SessionState.Path.CurrentLocation)" -ForegroundColor LightGreen
     $prompt += Write-VcsStatus
-    $prompt += Write-Prompt "]`n" -ForegroundColor Green
+    $prompt += Write-Prompt "]`n" -ForegroundColor LightGreen
     $prompt += "$('>' * ($nestedPromptLevel + 1)) "
 
     $LASTEXITCODE = $origLastExitCode
@@ -49,6 +49,7 @@ function prompt {
 #
 
 import-module RedShells
+import-module posh-git
 
 set-alias go Set-Workspace
 set-alias addw Add-Workspace
@@ -59,10 +60,6 @@ set-alias adds Add-Script
 set-alias gets Get-Scripts
 set-alias dels Remove-Script
 
-# set home
-$env:HOMEDRIVE = 'C:'
-$env:HOMEPATH = '\'
-
 "powered by redshells"
 
 # vs 2019 => [16.0,17.0)
@@ -70,5 +67,4 @@ Initialize-Build(
 	(Get-VSSetupInstance -Prerelease | Select-VSSetupInstance -Version '17.0'))
 
 set-location "C:\Users\delossantosj\Documents\git"
-(get-psprovider 'FileSystem').Home = "C:"
 ""
