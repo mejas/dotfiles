@@ -1,70 +1,61 @@
-function Initialize-Build($instance)
-{
-    $toolsPath =
-		[System.IO.Path]::Combine(
-			$instance.InstallationPath,
-			"Common7\Tools")
+function Initialize-Build($instance) {
+	$toolsPath =
+	[System.IO.Path]::Combine(
+		$instance.InstallationPath,
+		"Common7\Tools\Microsoft.VisualStudio.DevShell.dll")
 	
-	if(Test-Path $toolsPath)
-	{
-		Write-Host ("`n{0} variables initializing..." -f $instance.DisplayName) -ForegroundColor Yellow -NoNewLine
+	if (Test-Path $toolsPath) {
+		Write-Host ("`n{0} variables initializing..." -f $instance.DisplayName) -ForegroundColor Yellow
 		
-		pushd $toolsPath
-		
-		cmd /c "VsDevCmd.bat&set" |	foreach	{
-			if ($_ -match "=")
-			{
-				$v = $_.split("=");
-				#Write-Host $v[0] : $v[1]
-				set-item -Path ("env:{0}" -f $v[0]) -Value ($v[1])
-			}
-		}
-		popd
+		Import-Module $toolsPath
+		Enter-VsDevShell $instance.InstanceId -SkipAutomaticLocation
 		
 		Write-Host "set!" -ForegroundColor Yellow
 	}
-	else
-	{
+	else {
 		Write-Host "Unable to find Visual Studio tools." -ForegroundColor Yellow -NoNewLine
 	}
 }
 
-# # basically gives the shell directory formatting and color
-function prompt {
-    $origLastExitCode = $LASTEXITCODE
+$env:DOTNET_CLI_TELEMETRY_OPTOUT = 1
 
-    $prompt = ""
+$profileDir = [System.IO.Directory]::GetParent($profile);
+$theme 		= [System.IO.Path]::Combine($profileDir, "theme.json");
 
-    $prompt += Write-Prompt "[$($ExecutionContext.SessionState.Path.CurrentLocation)" -ForegroundColor LightGreen
-    $prompt += Write-VcsStatus
-    $prompt += Write-Prompt "]`n" -ForegroundColor LightGreen
-    $prompt += "$('>' * ($nestedPromptLevel + 1)) "
+if($PSVersionTable.PSVersion.Major -gt 5)
+{
+	# vs 2019 => [16.0,17.0)
+	Initialize-Build(
+		(Get-VSSetupInstance -Prerelease | Select-VSSetupInstance -Latest))
 
-    $LASTEXITCODE = $origLastExitCode
-    $prompt
+	$redshells =
+	 [System.IO.Path]::Combine(
+		$profileDir,
+		"Modules\redshells\Redshells.PowerShell.dll");
+	
+	Import-Module $redshells
+
+	set-alias go Set-Workspace
+	set-alias addw New-Workspace
+	set-alias getw Get-Workspace
+	set-alias delw Remove-Workspace
 }
 
-#
-# Add redshells
-#
+Import-Module posh-git
 
-import-module RedShells
-import-module posh-git
-
-set-alias go Set-Workspace
-set-alias addw Add-Workspace
-set-alias getw Get-Workspaces
-set-alias delw Remove-Workspace
-set-alias auto Invoke-Script
-set-alias adds Add-Script
-set-alias gets Get-Scripts
-set-alias dels Remove-Script
-
-"powered by redshells"
-
-# vs 2019 => [16.0,17.0)
-Initialize-Build(
-	(Get-VSSetupInstance -Prerelease | Select-VSSetupInstance -Version '17.0'))
-
-set-location "C:\Users\delossantosj\Documents\git"
-""
+$GitPromptSettings.BeforePath = '['
+$GitPromptSettings.BeforePath.ForegroundColor = 0x90EE90
+$GitPromptSettings.AfterPath = ']'
+$GitPromptSettings.AfterPath.ForegroundColor = 0x90EE90
+$GitPromptSettings.DefaultPromptBeforeSuffix.Text = '`n'
+$GitPromptSettings.DefaultPromptPath.ForegroundColor = 0x90EE90
+$GitPromptSettings.PathStatusSeparator.Text = $null
+# Import the Chocolatey Profile that contains the necessary code to enable
+# tab-completions to function for `choco`.
+# Be aware that if you are missing these lines from your profile, tab completion
+# for `choco` will not function.
+# See https://ch0.co/tab-completion for details.
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
