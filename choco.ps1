@@ -40,6 +40,10 @@ $arr =
         'procexp',
         'python',
         'sql-server-management-studio',
-        'vim')
+        'vim',
+        'devtoys',
+        'k9s',
+        'linqpad',
+        'lazydocker')
 
 $arr | %{ choco install $_ -y }
