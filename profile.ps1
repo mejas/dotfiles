@@ -19,9 +19,6 @@ function Initialize-Build($instance) {
 
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = 1
 
-$profileDir = [System.IO.Directory]::GetParent($profile);
-$theme 		= [System.IO.Path]::Combine($profileDir, "theme.json");
-
 if($PSVersionTable.PSVersion.Major -gt 5)
 {
 	# vs 2019 => [16.0,17.0)
